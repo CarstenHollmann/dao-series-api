@@ -184,6 +184,9 @@ public class QuantityDataRepository extends
             return observation.getValue();
         }
         int scale = series.getNumberOfDecimals();
+        if (scale < 0) {
+            return observation.getValue();
+        }
         return new BigDecimal(observation.getValue()).setScale(scale, RoundingMode.HALF_UP)
                                                      .doubleValue();
     }
