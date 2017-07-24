@@ -48,6 +48,8 @@ import org.n52.series.db.beans.QuantityDataEntity;
 import org.n52.series.db.dao.DataDao;
 import org.n52.series.db.dao.DbQuery;
 
+import com.vividsolutions.jts.geom.Point;
+
 public class QuantityProfileDataRepository
         extends AbstractDataRepository<ProfileData, ProfileDatasetEntity, ProfileDataEntity, ProfileValue<Double>> {
 
@@ -100,6 +102,17 @@ public class QuantityProfileDataRepository
         for (DataEntity< ? > dataEntity : valueEntity.getValue()) {
             QuantityDataEntity quantityEntity = (QuantityDataEntity) dataEntity;
             QuantityValue valueItem = quantityRepository.createValue(quantityEntity.getValue(), quantityEntity, query);
+            if (dataEntity.isSetGeometry() && !(datasetEntity.getPlatform().getGeometry() instanceof Point)) {
+                valueItem.setGeometry(dataEntity.getGeometryEntity().getGeometry(query.getDatabaseSridCode()));
+            }
+            if (!timestart.equals(timeend)) {
+                if (dataEntity.getTimestart().equals(dataEntity.getTimeend()) && parameters.isShowTimeIntervals()) {
+                    valueItem.setTimestart(dataEntity.getTimestart().getTime());
+                    valueItem.setTimestamp(dataEntity.getTimeend().getTime());
+                } else {
+                    valueItem.setTimestamp(dataEntity.getTimeend().getTime());
+                }
+            }
             addParameters(quantityEntity, valueItem, query);
             for (Map<String, Object> parameterObject : valueItem.getParameters()) {
                 String verticalName = datasetEntity.getVerticalParameterName();
