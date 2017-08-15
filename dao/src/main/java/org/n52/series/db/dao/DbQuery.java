@@ -328,7 +328,7 @@ public class DbQuery {
         }
         return criteria;
     }
-    
+
     public Envelope createSpatialFilter() {
         BoundingBox spatialFilter = parameters.getSpatialFilter();
         if (spatialFilter != null) {
