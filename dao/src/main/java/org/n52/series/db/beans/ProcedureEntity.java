@@ -39,6 +39,8 @@ public class ProcedureEntity extends HierarchicalEntity<ProcedureEntity> {
 
     private boolean insitu;
 
+    private boolean deleted;
+
     private String procedureDescriptionFormat;
 
     public boolean isReference() {
@@ -63,6 +65,14 @@ public class ProcedureEntity extends HierarchicalEntity<ProcedureEntity> {
 
     public void setInsitu(boolean insitu) {
         this.insitu = insitu;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public String getProcedureDescriptionFormat() {

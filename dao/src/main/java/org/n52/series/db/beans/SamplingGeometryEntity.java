@@ -31,20 +31,40 @@ package org.n52.series.db.beans;
 
 import java.util.Date;
 
-import org.n52.series.db.DataModelUtil;
+import com.vividsolutions.jts.geom.Geometry;
 
 public class SamplingGeometryEntity extends GeometryEntity {
+
+    public static final String PROPERTY_PKID = "pkid";
+
+    /**
+     * A serial primary key.
+     */
+    private Long pkid;
 
     private Date timestamp;
 
     private Long seriesPkid;
 
+    /**
+     * @since 2.0.0
+     */
+    private GeometryEntity geometryEntity;
+
+    public Long getPkid() {
+        return pkid;
+    }
+
+    public void setPkid(Long pkid) {
+        this.pkid = pkid;
+    }
+
     public Date getTimestamp() {
-        return DataModelUtil.createUnmutableTimestamp(timestamp);
+        return timestamp;
     }
 
     public void setTimestamp(Date timestamp) {
-        this.timestamp = DataModelUtil.createUnmutableTimestamp(timestamp);
+        this.timestamp = timestamp;
     }
 
     public Long getSeriesPkid() {
@@ -53,5 +73,32 @@ public class SamplingGeometryEntity extends GeometryEntity {
 
     public void setSeriesPkid(Long seriesPkid) {
         this.seriesPkid = seriesPkid;
+    }
+
+    public Geometry getGeometry() {
+        return getGeometry(null);
+    }
+
+    public Geometry getGeometry(String srid) {
+        return geometryEntity != null
+                ? geometryEntity.getGeometry(srid)
+                : null;
+    }
+
+    public GeometryEntity setGeometry(Geometry geometry) {
+        this.geometryEntity = new GeometryEntity();
+        return this.geometryEntity.setGeometry(geometry);
+    }
+
+    public GeometryEntity getGeometryEntity() {
+        return geometryEntity;
+    }
+
+    public void setGeometryEntity(GeometryEntity geometryEntity) {
+        this.geometryEntity = geometryEntity;
+    }
+
+    public boolean isSetGeometry() {
+        return geometryEntity != null;
     }
 }
