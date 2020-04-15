@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2017 52°North Initiative for Geospatial Open Source
+ * Copyright (C) 2015-2020 52°North Initiative for Geospatial Open Source
  * Software GmbH
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -26,7 +26,6 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-
 package org.n52.series.db.beans;
 
 import java.util.Date;
@@ -60,11 +59,11 @@ public class SamplingGeometryEntity extends GeometryEntity {
     }
 
     public Date getTimestamp() {
-        return timestamp;
+        return (Date) timestamp.clone();
     }
 
     public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = (Date) timestamp.clone();
     }
 
     public Long getSeriesPkid() {
@@ -75,16 +74,19 @@ public class SamplingGeometryEntity extends GeometryEntity {
         this.seriesPkid = seriesPkid;
     }
 
+    @Override
     public Geometry getGeometry() {
         return getGeometry(null);
     }
 
+    @Override
     public Geometry getGeometry(String srid) {
         return geometryEntity != null
                 ? geometryEntity.getGeometry(srid)
                 : null;
     }
 
+    @Override
     public GeometryEntity setGeometry(Geometry geometry) {
         this.geometryEntity = new GeometryEntity();
         return this.geometryEntity.setGeometry(geometry);
@@ -98,6 +100,7 @@ public class SamplingGeometryEntity extends GeometryEntity {
         this.geometryEntity = geometryEntity;
     }
 
+    @Override
     public boolean isSetGeometry() {
         return geometryEntity != null;
     }
